@@ -1,0 +1,52 @@
+{% comment %}
+  snippets/product-card.liquid
+  Usage: {% render 'product-card', product: product, collection: collection %}
+  `collection` is optional and only scopes the product URL.
+{% endcomment %}
+{%- liquid
+  # First *available* variant, so a product whose first variant is sold out still shows a buyable one.
+  # Falls back to the first variant when nothing is available.
+  assign variant = product.selected_or_first_available_variant | default: product.variants.first
+
+  assign product_url = product.url
+  if collection
+    assign product_url = product.url | within: collection
+  endif
+
+  # Sale is decided on the variant that is actually displayed, and only when its compare-at is higher.
+  assign on_sale = false
+  if variant.compare_at_price != blank and variant.compare_at_price > variant.price
+    assign on_sale = true
+  endif
+
+  # Low-stock message only when Shopify tracks inventory and there is something left to buy.
+  # Untracked inventory reports a quantity of 0, which the legacy card showed as "Only 0 left!".
+  assign show_low_stock = false
+  if variant.available and variant.inventory_management == 'shopify' and variant.inventory_quantity > 0 and variant.inventory_quantity < 5
+    assign show_low_stock = true
+  endif
+-%}
+<div class="product-card">
+  <a href="{{ product_url }}">
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+  <h3 title="{{ product.title | escape }}">{{ product.title | escape }}</h3>
+  {%- if on_sale -%}
+    <span class="badge">SALE</span>
+    <s>{{ variant.compare_at_price | money }}</s>
+  {%- endif -%}
+  <span class="price">{{ variant.price | money }}</span>
+  {%- if show_low_stock -%}
+    <span class="low-stock">Only {{ variant.inventory_quantity }} left!</span>
+  {%- endif -%}
+  <p>{{ product.description | strip_html | truncate: 100 }}</p>
+  {%- if variant.available -%}
+    {%- render 'add-to-cart-button', product: product, variant: variant -%}
+  {%- else -%}
+    <button type="button" name="add" disabled>{{ 'product.form.not_in_stock' | t }}</button>
+  {%- endif -%}
+</div>

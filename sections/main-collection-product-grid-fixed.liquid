@@ -1,0 +1,27 @@
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <div class="product-grid-fixed">
+    {%- for product in collection.products -%}
+      {%- render 'product-card', product: product, collection: collection -%}
+    {%- else -%}
+      <p>{{ 'collection.empty_collection_html' | t }}</p>
+    {%- endfor -%}
+  </div>
+  {%- render 'pagination', paginate: paginate -%}
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection grid (fixed)",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ]
+}
+{% endschema %}
