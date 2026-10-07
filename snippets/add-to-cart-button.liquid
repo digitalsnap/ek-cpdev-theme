@@ -1,0 +1,8 @@
+{% comment %}
+  Minimal add-to-cart form so the legacy card can run.
+  Relies on `product` and `variant` being in scope (set by the caller).
+{% endcomment %}
+{% form 'product', product %}
+  <input type="hidden" name="id" value="{{ variant.id }}">
+  <button type="submit" name="add">Add to cart</button>
+{% endform %}

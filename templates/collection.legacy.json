@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "legacy-collection-grid",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

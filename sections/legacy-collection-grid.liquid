@@ -1,0 +1,10 @@
+{% for product in collection.products limit: 50 %}
+{% include 'product-card-legacy' %}
+{% endfor %}
+
+{% schema %}
+{
+  "name": "Legacy collection grid",
+  "settings": []
+}
+{% endschema %}

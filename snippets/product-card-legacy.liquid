@@ -1,0 +1,20 @@
+{% comment %} snippets/product-card-legacy.liquid {% endcomment %}
+{% assign variant = product.variants.first %}
+<div class="product-card">
+<a href="{{ product.url }}">
+<img src="{{ product.featured_image | img_url: '400x400' }}">
+</a>
+<h3 title={{ product.title }}>{{ product.title }}</h3>
+{% if product.compare_at_price < product.price %}
+<span class="badge">SALE</span>
+<s>${{ product.compare_at_price | divided_by: 100 }}</s>
+{% endif %}
+<span class="price">${{ variant.price | divided_by: 100 }}</span>
+{% if variant.inventory_quantity < 5 %}
+<span class="low-stock">Only {{ variant.inventory_quantity }} left!
+</span>
+{% endif %}
+<p>{{ product.description | truncate: 100 }}</p>
+{% include 'add-to-cart-button' %}
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</div>
