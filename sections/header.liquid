@@ -251,7 +251,7 @@
             <li class="mobile-only"><a href="{{ section.settings.navbar_menu_item_link }}">{{ section.settings.navbar_menu_item_text }}</a></li>
           {%- endif -%}
           {%- if section.settings.enable_socials -%}
-            {%- capture 'socials' -%}
+            {%- capture socials -%}
               {%- if settings.social_instagram -%}instagram|{{settings.social_instagram}}|{{ settings.social_instagram_name }}->{%- endif -%}
               {%- if settings.social_pinterest -%}pinterest|{{settings.social_pinterest}}|{{ settings.social_pinterest_name }}->{%- endif -%}
               {%- if settings.social_youtube -%}youtube|{{settings.social_youtube}}|{{ settings.social_youtube_name }}->{%- endif -%}
@@ -1168,3 +1168,13 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- capture 'socials' -%}"
+  to: "{%- capture socials -%}"
+  position: 10819..10842
+{% endcomment %}
